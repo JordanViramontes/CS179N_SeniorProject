@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://b3ghxetcov6va"]
+[gd_scene load_steps=14 format=3 uid="uid://b3ghxetcov6va"]
 
 [ext_resource type="Script" uid="uid://1eg24s10xjnm" path="res://scripts/Characters/enemy_base.gd" id="1_vv3x1"]
 [ext_resource type="Material" uid="uid://cv7l0r86mk435" path="res://assets/hitflash_mat.tres" id="2_lxe82"]
 [ext_resource type="Script" uid="uid://v8gickpnd8q0" path="res://scripts/components/health_component.gd" id="3_xuskm"]
 [ext_resource type="Script" uid="uid://cgpmhci7164s6" path="res://scripts/components/hitbox_component.gd" id="4_3ysdf"]
+[ext_resource type="PackedScene" uid="uid://b2dxxb33n0l2" path="res://scenes/UI/HealthBar.tscn" id="5_h1n3s"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4me14"]
 
@@ -22,6 +23,9 @@ albedo_color = Color(0.807843, 0.494118, 0.47451, 0.266667)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_2p2xa"]
 material = SubResource("StandardMaterial3D_p67kr")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7g64e"]
+viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Enemy" type="CharacterBody3D"]
 collision_layer = 4
@@ -62,5 +66,20 @@ mesh = SubResource("PlaneMesh_2p2xa")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 avoidance_enabled = true
 radius = 10.0
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31025, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_7g64e")
+region_enabled = true
+region_rect = Rect2(-0.0449286, -0.0479846, 242.3, 6.19309)
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
+
+[node name="HealthBar" parent="Sprite3D/SubViewport" instance=ExtResource("5_h1n3s")]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 241.0
+offset_bottom = 5.0
 
 [connection signal="timeout" from="PathfindTimer" to="." method="_on_pathfind_timer_timeout"]
